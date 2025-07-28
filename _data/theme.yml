@@ -35,6 +35,12 @@ locations-min: 1 # min size for subject cloud, too many terms = slow load time!
 locations-stopwords: # set of subjects separated by ; that will be removed from display, e.g. boxers;boxing
 
 ##########
+# PAJUBA WORDS PAGE
+#
+pajuba_words_field: words_catalogued # configure the variable to retrieve the words from the spreadsheet
+pajuba_words_mi: 1 # min size to show this
+
+##########
 # MAP PAGE
 #
 # see _data/map-config.csv for field display options
