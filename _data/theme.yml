@@ -39,6 +39,7 @@ locations-stopwords: # set of subjects separated by ; that will be removed from 
 #
 pajuba-words-field: words_catalogued # configure the variable to retrieve the words from the spreadsheet
 pajuba-words-min: 1 # min size to show this
+pajuba-words-stopwords: # nothing to add
 
 ##########
 # MAP PAGE
