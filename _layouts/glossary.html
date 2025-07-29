@@ -1,8 +1,14 @@
 ---
-# default "Glossary" page layout
-layout: default
+# Page for glossary
+
+layout: page
 ---
 
-<div class="container my-4">
-    {{ content }}
-</div>
+{{ content }}
+
+{%- if page.cloud-fields == "site.data.theme.pajuba-words-field" -%}
+    {% assign fields = site.data.theme.pajuba-words-field %}
+    {% assign min = site.data.theme.pajuba-words-min | default: 1 %}
+{%- endif -%}
+{% include feature/cloud.html fields=fields min=min stopwords=stopwords shuffle=page.cloud-shuffle background=page.cloud-background button=page.cloud-button %}
+
