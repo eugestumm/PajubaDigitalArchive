@@ -13,4 +13,4 @@ type,Type,
 format,Format,
 rights,Rights,
 rightsstatement,Rights Statement,,true
-words_catalogued,Featured words
+words_catalogued,Featured words, true
