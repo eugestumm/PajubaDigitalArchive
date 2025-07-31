@@ -3,6 +3,150 @@
 
 layout: page
 ---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Word-Book Network</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body { font-family: sans-serif; }
+    .link { stroke: #aaa; stroke-opacity: 0.6; }
+    .node text { pointer-events: none; font-size: 10px; }
+    .node circle { stroke: #fff; stroke-width: 1.5px; }
+  </style>
+</head>
+<body>
+<h2>Word–Date–Location Network</h2>
+<svg width="960" height="600"></svg>
+<script>
+const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOJ65zw28y13QZmsFBDHkS9DZo1Jw1SVOfulvrmyEzR9hMoWdnd5CYGDKpWoVWq-dhoTIOli16M_Yo/pub?output=csv";
+
+fetch(csvUrl)
+  .then(response => response.text())
+  .then(data => {
+    const parsed = d3.csvParse(data);
+
+    const nodes = new Map();
+    const links = [];
+
+    parsed.forEach(row => {
+      const words = row["words_catalogued"]?.split(";").map(w => w.trim()).filter(Boolean);
+      const date = row["date"]?.trim();
+      const location = row["location"]?.trim();
+
+      if (!words || !date || !location) return;
+
+      // Ensure date and location are nodes
+      if (!nodes.has(date)) nodes.set(date, { id: date, group: "date" });
+      if (!nodes.has(location)) nodes.set(location, { id: location, group: "location" });
+
+      words.forEach(word => {
+        if (!nodes.has(word)) nodes.set(word, { id: word, group: "word" });
+
+        links.push({ source: word, target: date });
+        links.push({ source: word, target: location });
+      });
+    });
+
+    const graph = {
+      nodes: Array.from(nodes.values()),
+      links: links
+    };
+
+    if (graph.nodes.length === 0 || graph.links.length === 0) {
+      d3.select("body").append("p").text("No nodes or links found. Check if column names match: 'words_catalogued', 'date', 'location'.");
+      return;
+    }
+
+    const svg = d3.select("svg"),
+          width = +svg.attr("width"),
+          height = +svg.attr("height");
+
+    const simulation = d3.forceSimulation(graph.nodes)
+        .force("link", d3.forceLink(graph.links).id(d => d.id).distance(80))
+        .force("charge", d3.forceManyBody().strength(-60))
+        .force("center", d3.forceCenter(width / 2, height / 2));
+
+    const link = svg.append("g")
+        .attr("stroke", "#aaa")
+        .attr("stroke-width", 1.5)
+      .selectAll("line")
+      .data(graph.links)
+      .enter().append("line")
+        .attr("class", "link");
+
+    const node = svg.append("g")
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 1.5)
+      .selectAll("circle")
+      .data(graph.nodes)
+      .enter().append("circle")
+        .attr("r", 5)
+        .attr("fill", d => {
+          if (d.group === "word") return "#1f77b4";
+          if (d.group === "date") return "#2ca02c";
+          if (d.group === "location") return "#d62728";
+          return "#ccc";
+        })
+        .call(drag(simulation));
+
+    const label = svg.append("g")
+      .selectAll("text")
+      .data(graph.nodes)
+      .enter().append("text")
+        .text(d => d.id)
+        .attr("font-size", 8);
+
+    simulation.on("tick", () => {
+      link
+          .attr("x1", d => d.source.x)
+          .attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x)
+          .attr("y2", d => d.target.y);
+
+      node
+          .attr("cx", d => d.x)
+          .attr("cy", d => d.y);
+
+      label
+          .attr("x", d => d.x + 5)
+          .attr("y", d => d.y + 3);
+    });
+
+    function drag(simulation) {
+      function dragstarted(event, d) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      }
+
+      function dragged(event, d) {
+        d.fx = event.x;
+        d.fy = event.y;
+      }
+
+      function dragended(event, d) {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+      }
+
+      return d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended);
+    }
+
+  })
+  .catch(error => {
+    console.error("CSV load error:", error);
+    d3.select("body").append("p").text("Error loading CSV file.");
+  });
+</script>
+</body>
+</html>
+
 
 {{ content }}
 
