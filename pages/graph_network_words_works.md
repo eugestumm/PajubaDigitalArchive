@@ -6,7 +6,7 @@ permalink: /graph_network_words_works.html
 
 
 <div class="mobile-friendly-iframe">
-  <iframe src="{{ site.baseurl }}/layouts/network_graph_words_work_layout.html" 
+  <iframe src="{{ site.baseurl }}/assets/network_graph_words_work_layout.html" 
           allowfullscreen>
   </iframe>
 </div>
