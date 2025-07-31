@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Book Network Explorer</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    overflow: hidden;
+    color: #fff;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+  }
+  
+  .title {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(45deg, #fff, #e0e7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .control-label {
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+  
+  .slider {
+    width: 120px;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    outline: none;
+    -webkit-appearance: none;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .button {
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+  }
+  
+  .button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+  
+  .viz-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  svg {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+  }
+  
+  .link {
+    stroke-width: 2px;
+    stroke-opacity: 0.4;
+    transition: all 0.3s ease;
+  }
+  
+  .link.highlighted {
+    stroke-width: 3px;
+    stroke-opacity: 0.8;
+  }
+  
+  .node-group {
+    cursor: pointer;
+  }
+  
+  .word-node {
+    fill: url(#wordGradient);
+    stroke: rgba(255, 255, 255, 0.3);
+    stroke-width: 2px;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    transition: all 0.2s ease;
+  }
+  
+  .word-node:hover {
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.4));
+    stroke: rgba(255, 255, 255, 0.6);
+  }
+  
+  .title-node {
+    fill: url(#titleGradient);
+    stroke: rgba(255, 255, 255, 0.4);
+    stroke-width: 3px;
+    filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.4));
+    transition: all 0.2s ease;
+  }
+  
+  .title-node:hover {
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5));
+    stroke: rgba(255, 255, 255, 0.8);
+  }
+  
+  .node-text {
+    font-weight: 600;
+    pointer-events: none;
+    user-select: none;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .word-text {
+    fill: #fff;
+    font-size: 11px;
+  }
+  
+  .title-text {
+    fill: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  }
+  
+  .tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(20px);
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    max-width: 250px;
+  }
+  
+  .tooltip.visible {
+    opacity: 1;
+  }
+  
+  .tooltip-title {
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #64ffda;
+  }
+  
+  .tooltip-info {
+    font-size: 12px;
+    opacity: 0.9;
+  }
+  
+  .legend {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+    z-index: 50;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  
+  .legend-item:last-child {
+    margin-bottom: 0;
+  }
+  
+  .legend-circle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .word-legend {
+    background: linear-gradient(45deg, #4f46e5, #7c3aed);
+  }
+  
+  .title-legend {
+    background: linear-gradient(45deg, #f59e0b, #ef4444);
+  }
+  
+  .loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 200;
+  }
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .zoom-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 50;
+  }
+  
+  .zoom-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .zoom-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1 class="title">Book Network Explorer</h1>
+    <div class="controls">
+      <div class="control-group">
+        <label class="control-label">Link Strength</label>
+        <input type="range" class="slider" id="linkStrength" min="0.1" max="2" step="0.1" value="0.8">
+      </div>
+      <div class="control-group">
+        <label class="control-label">Node Spacing</label>
+        <input type="range" class="slider" id="nodeSpacing" min="50" max="300" step="10" value="120">
+      </div>
+      <button class="button" id="resetBtn">Reset View</button>
+    </div>
+  </div>
+  
+  <div class="viz-container">
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <div>Loading network data...</div>
+    </div>
+    
+    <svg id="network-svg">
+      <defs>
+        <linearGradient id="wordGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#4f46e5"/>
+          <stop offset="100%" style="stop-color:#7c3aed"/>
+        </linearGradient>
+        <linearGradient id="titleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#f59e0b"/>
+          <stop offset="100%" style="stop-color:#ef4444"/>
+        </linearGradient>
+        <linearGradient id="linkGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#4f46e5"/>
+          <stop offset="100%" style="stop-color:#f59e0b"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-circle word-legend"></div>
+        <span>Words</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-circle title-legend"></div>
+        <span>Book Titles</span>
+      </div>
+    </div>
+    
+    <div class="zoom-controls">
+      <button class="zoom-btn" id="zoomIn">+</button>
+      <button class="zoom-btn" id="zoomOut">−</button>
+    </div>
+  </div>
+</div>
+
+<div id="tooltip" class="tooltip"></div>
+
+<script>
+  const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOJ65zw28y13QZmsFBDHkS9DZo1Jw1SVOfulvrmyEzR9hMoWdnd5CYGDKpWoVWq-dhoTIOli16M_Yo/pub?output=csv";
+
+  const svg = d3.select("#network-svg");
+  const tooltip = d3.select("#tooltip");
+  const loading = d3.select("#loading");
+  
+  let width, height;
+  let simulation, nodes, links, zoomBehavior;
+  let linkStrengthSlider = d3.select("#linkStrength");
+  let nodeSpacingSlider = d3.select("#nodeSpacing");
+  let resetBtn = d3.select("#resetBtn");
+  let zoomInBtn = d3.select("#zoomIn");
+  let zoomOutBtn = d3.select("#zoomOut");
+
+  function updateDimensions() {
+    const container = document.querySelector('.viz-container');
+    width = container.clientWidth;
+    height = container.clientHeight;
+    svg.attr("width", width).attr("height", height);
+  }
+
+  updateDimensions();
+  window.addEventListener('resize', updateDimensions);
+
+  const zoomLayer = svg.append("g").attr("class", "zoom-layer");
+
+  zoomBehavior = d3.zoom()
+    .scaleExtent([0.3, 8])
+    .on("zoom", (event) => {
+      zoomLayer.attr("transform", event.transform);
+    });
+
+  svg.call(zoomBehavior);
+
+  // Zoom controls
+  zoomInBtn.on("click", () => {
+    svg.transition().duration(300).call(
+      zoomBehavior.scaleBy, 1.5
+    );
+  });
+
+  zoomOutBtn.on("click", () => {
+    svg.transition().duration(300).call(
+      zoomBehavior.scaleBy, 1 / 1.5
+    );
+  });
+
+  resetBtn.on("click", () => {
+    svg.transition().duration(500).call(
+      zoomBehavior.transform,
+      d3.zoomIdentity
+    );
+    if (simulation) {
+      simulation.alpha(0.3).restart();
+    }
+  });
+
+  fetch(csvUrl)
+    .then(response => response.text())
+    .then(data => {
+      loading.style("display", "none");
+      
+      const parsed = d3.csvParse(data);
+      const nodesMap = new Map();
+      const linksArray = [];
+      const wordFreq = new Map();
+
+      parsed.forEach(row => {
+        const words = row["words_catalogued"]?.split(";").map(w => w.trim()).filter(Boolean);
+        const title = row["title"]?.trim();
+        const creator = row["creator"]?.trim();
+        const date = row["date"]?.trim();
+
+        if (!words || !title) return;
+
+        if (!nodesMap.has(title)) {
+          nodesMap.set(title, { 
+            id: title, 
+            group: "title", 
+            creator: creator,
+            date: date,
+            type: "title",
+            connections: 0
+          });
+        }
+
+        words.forEach(word => {
+          wordFreq.set(word, (wordFreq.get(word) || 0) + 1);
+          if (!nodesMap.has(word)) {
+            nodesMap.set(word, { 
+              id: word, 
+              group: "word",
+              type: "word",
+              connections: 0
+            });
+          }
+          linksArray.push({ source: word, target: title });
+        });
+      });
+
+      // Calculate actual connections for each node
+      const connectionCount = new Map();
+      linksArray.forEach(link => {
+        connectionCount.set(link.source, (connectionCount.get(link.source) || 0) + 1);
+        connectionCount.set(link.target, (connectionCount.get(link.target) || 0) + 1);
+      });
+
+      // Set frequency and connections for scaling
+      nodesMap.forEach(node => {
+        node.connections = connectionCount.get(node.id) || 0;
+        if (node.group === "word") {
+          node.frequency = wordFreq.get(node.id) || 1;
+        } else {
+          node.frequency = 2;
+        }
+      });
+
+      nodes = Array.from(nodesMap.values());
+      links = linksArray;
+
+      initializeVisualization();
+    })
+    .catch(error => {
+      loading.html('<div style="color: #ff6b6b;">Failed to load data</div>');
+      console.error(error);
+    });
+
+  function initializeVisualization() {
+    const minRadius = 6;
+    const maxRadius = 24;
+    const titleRadius = 32;
+
+    const freqExtent = d3.extent(nodes.filter(d => d.group === "word"), d => d.frequency);
+    const sizeScale = d3.scaleSqrt().domain(freqExtent || [1, 1]).range([minRadius, maxRadius]);
+
+    simulation = d3.forceSimulation(nodes)
+      .force("link", d3.forceLink(links).id(d => d.id).distance(120).strength(0.8))
+      .force("charge", d3.forceManyBody().strength(-300))
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force("collision", d3.forceCollide(d => {
+        return d.group === "title" ? titleRadius + 8 : sizeScale(d.frequency) + 6;
+      }));
+
+    // Links
+    const linkElements = zoomLayer.append("g")
+      .attr("class", "links")
+      .selectAll("line")
+      .data(links)
+      .join("line")
+      .attr("class", "link")
+      .attr("stroke", "url(#linkGradient)");
+
+    // Nodes
+    const nodeElements = zoomLayer.append("g")
+      .attr("class", "nodes")
+      .selectAll("g")
+      .data(nodes)
+      .join("g")
+      .attr("class", "node-group")
+      .call(d3.drag()
+        .on("start", dragStarted)
+        .on("drag", dragged)
+        .on("end", dragEnded));
+
+    // Node circles
+    nodeElements.append("circle")
+      .attr("r", d => d.group === "title" ? titleRadius : sizeScale(d.frequency))
+      .attr("class", d => d.group === "title" ? "title-node" : "word-node")
+      .on("mouseover", showTooltip)
+      .on("mousemove", moveTooltip)
+      .on("mouseout", hideTooltip)
+      .on("click", highlightConnections);
+
+    // Node labels
+    nodeElements.append("text")
+      .text(d => d.id)
+      .attr("text-anchor", "middle")
+      .attr("dy", "0.35em")
+      .attr("class", d => d.group === "title" ? "node-text title-text" : "node-text word-text")
+      .call(wrapText, d => d.group === "title" ? titleRadius * 1.6 : sizeScale(d.frequency) * 1.6);
+
+    // Control handlers
+    linkStrengthSlider.on("input", function() {
+      const strength = +this.value;
+      simulation.force("link").strength(strength);
+      simulation.alpha(0.3).restart();
+    });
+
+    nodeSpacingSlider.on("input", function() {
+      const distance = +this.value;
+      simulation.force("link").distance(distance);
+      simulation.alpha(0.3).restart();
+    });
+
+    simulation.on("tick", () => {
+      linkElements
+        .attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x)
+        .attr("y2", d => d.target.y);
+
+      nodeElements
+        .attr("transform", d => `translate(${d.x},${d.y})`);
+    });
+
+    function dragStarted(event, d) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+
+    function dragged(event, d) {
+      d.fx = event.x;
+      d.fy = event.y;
+    }
+
+    function dragEnded(event, d) {
+      if (!event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
+
+    function showTooltip(event, d) {
+      const creatorInfo = d.creator ? `<div class="tooltip-info">Creator: ${d.creator}</div>` : '';
+      const dateInfo = d.date ? `<div class="tooltip-info">Date: ${d.date}</div>` : '';
+      const connectionInfo = d.connections > 0 ? `<div class="tooltip-info">Connections: ${d.connections}</div>` : '';
+      const frequencyInfo = d.group === "word" && d.frequency > 1 ? `<div class="tooltip-info">Appears in ${d.frequency} books</div>` : '';
+      
+      tooltip
+        .html(`
+          <div class="tooltip-title">${d.id}</div>
+          <div class="tooltip-info">Type: ${d.group === 'title' ? 'Book Title' : 'Word'}</div>
+          ${connectionInfo}
+          ${frequencyInfo}
+          ${creatorInfo}
+          ${dateInfo}
+        `)
+        .classed("visible", true);
+      
+      moveTooltip(event);
+    }
+
+    function moveTooltip(event) {
+      tooltip
+        .style("left", (event.pageX + 15) + "px")
+        .style("top", (event.pageY - 10) + "px");
+    }
+
+    function hideTooltip(event, d) {
+      tooltip.classed("visible", false);
+      
+      // Reset link highlighting
+      linkElements.classed("highlighted", false);
+    }
+
+    function highlightConnections(event, d) {
+      const connectedLinks = links.filter(link => 
+        link.source.id === d.id || link.target.id === d.id
+      );
+      
+      linkElements.classed("highlighted", link => 
+        connectedLinks.includes(link)
+      );
+      
+      setTimeout(() => {
+        linkElements.classed("highlighted", false);
+      }, 2000);
+    }
+
+    function wrapText(text, maxWidth) {
+      text.each(function() {
+        const textEl = d3.select(this);
+        const words = textEl.text().split(/\s+/).reverse();
+        const lineHeight = 1.1;
+        let line = [];
+        let lineNumber = 0;
+        const maxLines = 2;
+        
+        textEl.text(null);
+        let tspan = textEl.append("tspan").attr("x", 0).attr("dy", "0.35em");
+
+        while (words.length > 0 && lineNumber < maxLines) {
+          const word = words.pop();
+          line.push(word);
+          tspan.text(line.join(" "));
+          
+          if (tspan.node().getComputedTextLength() > maxWidth && line.length > 1) {
+            line.pop();
+            tspan.text(line.join(" "));
+            line = [word];
+            if (++lineNumber < maxLines) {
+              tspan = textEl.append("tspan")
+                .attr("x", 0)
+                .attr("dy", lineHeight + "em")
+                .text(word);
+            }
+          }
+        }
+        
+        if (words.length > 0) {
+          const lastTspan = textEl.selectAll("tspan").nodes().slice(-1)[0];
+          if (lastTspan) {
+            let text = d3.select(lastTspan).text();
+            while (d3.select(lastTspan).node().getComputedTextLength() > maxWidth && text.length > 0) {
+              text = text.slice(0, -1);
+              d3.select(lastTspan).text(text + "…");
+            }
+          }
+        }
+      });
+    }
+  }
+</script>
+
+</body>
+</html>
