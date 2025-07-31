@@ -4,53 +4,63 @@ layout: page
 permalink: /graph_network_words_works.html
 ---
 
-
-<div class="mobile-friendly-iframe">
+<div class="responsive-network-iframe">
   <iframe src="{{ site.baseurl }}/assets/network_graph_words_work_layout.html" 
           allowfullscreen>
   </iframe>
 </div>
 
 <style>
-.mobile-friendly-iframe {
-  position: relative;
+.responsive-network-iframe {
   width: 100%;
-  height: 70vh; /* Use viewport height for better mobile experience */
-  min-height: 400px;
+  height: 800px; /* Much taller for desktop */
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin: 20px 0;
 }
 
-.mobile-friendly-iframe iframe {
+.responsive-network-iframe iframe {
   width: 100%;
   height: 100%;
   border: none;
   transform-origin: 0 0;
 }
 
+/* Tablet adjustments */
+@media (max-width: 1024px) {
+  .responsive-network-iframe {
+    height: 700px;
+  }
+}
+
 /* Mobile optimizations */
 @media (max-width: 768px) {
-  .mobile-friendly-iframe {
-    height: 80vh; /* Larger on mobile */
+  .responsive-network-iframe {
+    height: 80vh; /* Use viewport height on mobile */
     min-height: 500px;
     margin: 10px -15px; /* Extend to screen edges */
     border-radius: 0;
   }
   
-  .mobile-friendly-iframe iframe {
-    /* Scale up the content for mobile */
-    transform: scale(1.2);
-    width: 83.33%; /* Compensate for scale */
-    height: 83.33%;
+  .responsive-network-iframe iframe {
+    transform: scale(1.1); /* Slight scale for better readability */
+    width: 90.9%;
+    height: 90.9%;
   }
 }
 
+/* Small phones */
 @media (max-width: 480px) {
-  .mobile-friendly-iframe iframe {
-    transform: scale(1.5); /* Even bigger on small phones */
-    width: 66.67%;
-    height: 66.67%;
+  .responsive-network-iframe {
+    height: 85vh;
+    min-height: 450px;
+  }
+  
+  .responsive-network-iframe iframe {
+    transform: scale(1.2);
+    width: 83.33%;
+    height: 83.33%;
   }
 }
 </style>
