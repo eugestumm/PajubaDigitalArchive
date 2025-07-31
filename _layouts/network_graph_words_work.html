@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Words Connected to Book Titles</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; padding: 0;
+    background: #f0f2f5; /* soft light gray */
+    overflow: hidden;
+  }
+  h2 {
+    text-align: center;
+    margin: 10px 0;
+    color: #333;
+  }
+  svg {
+    border: 1px solid #ccc;
+    display: block;
+    margin: auto;
+    background: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .link {
+    stroke: #999;
+    stroke-opacity: 0.3;
+  }
+  circle {
+    stroke: #fff;
+    stroke-width: 1.5px;
+    cursor: pointer;
+    filter: drop-shadow(0 0 1px rgba(0,0,0,0.1));
+  }
+  text {
+    font-size: 10px;
+    pointer-events: none;
+    font-weight: 600;
+    user-select: none;
+    text-shadow: 0 0 2px rgba(0,0,0,0.4);
+  }
+  text.title-label {
+    fill: #222; /* dark text on orange bubble */
+    text-shadow: none;
+  }
+  .tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 6px 10px;
+    font-size: 13px;
+    background: rgba(0,0,0,0.75);
+    color: #fff;
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<h2>Words Connected to Book Titles</h2>
+<div id="tooltip" class="tooltip"></div>
+<svg width="960" height="720"></svg>
+
+<script>
+  const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOJ65zw28y13QZmsFBDHkS9DZo1Jw1SVOfulvrmyEzR9hMoWdnd5CYGDKpWoVWq-dhoTIOli16M_Yo/pub?output=csv";
+
+  const svg = d3.select("svg"),
+        width = +svg.attr("width"),
+        height = +svg.attr("height");
+
+  const tooltip = d3.select("#tooltip");
+
+  // Zoom & pan group
+  const zoomLayer = svg.append("g");
+
+  svg.call(d3.zoom()
+    .scaleExtent([0.5, 5])
+    .on("zoom", (event) => {
+      zoomLayer.attr("transform", event.transform);
+    }));
+
+  fetch(csvUrl)
+    .then(response => response.text())
+    .then(data => {
+      const parsed = d3.csvParse(data);
+      const nodesMap = new Map();
+      const links = [];
+      const wordFreq = new Map();
+
+      parsed.forEach(row => {
+        const words = row["words_catalogued"]?.split(";").map(w => w.trim()).filter(Boolean);
+        const title = row["title"]?.trim();
+        const creator = row["creator"]?.trim();
+
+        if (!words || !title) return;
+
+        if (!nodesMap.has(title)) nodesMap.set(title, { id: title, group: "title", creator: creator });
+        else {
+          let existing = nodesMap.get(title);
+          if (!existing.creator) existing.creator = creator;
+        }
+
+        words.forEach(word => {
+          wordFreq.set(word, (wordFreq.get(word) || 0) + 1);
+          if (!nodesMap.has(word)) nodesMap.set(word, { id: word, group: "word" });
+          links.push({ source: word, target: title });
+        });
+      });
+
+      nodesMap.forEach(node => {
+        if (node.group === "word") {
+          node.frequency = wordFreq.get(node.id) || 1;
+        } else {
+          node.frequency = 1.5;
+        }
+      });
+
+      const nodes = Array.from(nodesMap.values());
+
+      const minRadius = 8,
+            maxRadius = 28;
+
+      const freqExtent = d3.extent(nodes.filter(d => d.group === "word"), d => d.frequency);
+      const sizeScale = d3.scaleSqrt().domain(freqExtent).range([minRadius, maxRadius]);
+
+      const titleRadius = 30;
+
+      const colorScale = d3.scaleOrdinal()
+        .domain(["word", "title"])
+        .range(["#1f77b4", "#ff7f0e"]);
+
+      const simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(d => d.id).distance(100).strength(0.8))
+        .force("charge", d3.forceManyBody().strength(-200))
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("collision", d3.forceCollide(d => {
+          return d.group === "title" ? titleRadius + 6 : sizeScale(d.frequency) + 4;
+        }));
+
+      const link = zoomLayer.append("g")
+        .attr("stroke", "#999")
+        .attr("stroke-opacity", 0.3)
+        .selectAll("line")
+        .data(links)
+        .join("line")
+        .attr("class", "link");
+
+      const nodeGroup = zoomLayer.append("g")
+        .selectAll("g")
+        .data(nodes)
+        .join("g")
+        .call(d3.drag()
+          .on("start", (event, d) => {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+          })
+          .on("drag", (event, d) => {
+            d.fx = event.x;
+            d.fy = event.y;
+          })
+          .on("end", (event, d) => {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+          }));
+
+      nodeGroup.append("circle")
+        .attr("r", d => d.group === "title" ? titleRadius : sizeScale(d.frequency))
+        .attr("fill", d => colorScale(d.group))
+        .attr("stroke-width", 1.8)
+        .attr("stroke", "#fff")
+        .on("mouseover", (event, d) => {
+          const creatorText = d.group === "title" && d.creator ? `<br/><strong>Creator:</strong> ${d.creator}` : "";
+          tooltip.style("opacity", 1)
+            .html(`<strong>${d.id}</strong><br/>Type: ${d.group}<br/>Frequency: ${d.frequency}${creatorText}`)
+            .style("left", (event.pageX + 12) + "px")
+            .style("top", (event.pageY - 28) + "px");
+          d3.select(event.currentTarget).attr("stroke", "#000").attr("stroke-width", 3);
+        })
+        .on("mousemove", (event) => {
+          tooltip.style("left", (event.pageX + 12) + "px")
+                 .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", (event, d) => {
+          tooltip.style("opacity", 0);
+          d3.select(event.currentTarget).attr("stroke", "#fff").attr("stroke-width", 1.8);
+        });
+
+      nodeGroup.append("text")
+        .text(d => d.id)
+        .attr("text-anchor", "middle")
+        .attr("dy", d => d.group === "title" ? "0.35em" : "0.33em")
+        .attr("class", d => d.group === "title" ? "title-label" : "")
+        .style("fill", d => d.group === "title" ? "#222" : "#fff")
+        .style("font-weight", d => d.group === "title" ? "700" : "600")
+        .style("font-size", d => d.group === "title" ? "12px" : "10px")
+        .call(wrapText, 2 * (titleRadius - 8), 2);
+
+      simulation.on("tick", () => {
+        link
+          .attr("x1", d => d.source.x)
+          .attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x)
+          .attr("y2", d => d.target.y);
+
+        nodeGroup.attr("transform", d => `translate(${d.x},${d.y})`);
+      });
+
+      // Smarter text wrap: max 2 lines, add ellipsis if too long
+      function wrapText(text, width, maxLines = 2) {
+        text.each(function() {
+          const textEl = d3.select(this);
+          const words = textEl.text().split(/\s+/).reverse();
+          const lineHeight = 1.1; // ems
+          const y = textEl.attr("y");
+          const dy = parseFloat(textEl.attr("dy"));
+
+          let line = [];
+          let lineNumber = 0;
+          let tspan = textEl.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+
+          while (words.length > 0 && lineNumber < maxLines) {
+            let word = words.pop();
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+              line.pop();
+              tspan.text(line.join(" "));
+              line = [word];
+              if (++lineNumber < maxLines) {
+                tspan = textEl.append("tspan").attr("x", 0).attr("y", y)
+                              .attr("dy", lineNumber * lineHeight + dy + "em")
+                              .text(word);
+              }
+            }
+          }
+
+          if (words.length > 0) {
+            let lastTspan = textEl.selectAll("tspan").filter((d, i) => i === maxLines - 1);
+            let currentText = lastTspan.text();
+            while (lastTspan.node().getComputedTextLength() > width && currentText.length > 0) {
+              currentText = currentText.slice(0, -1);
+              lastTspan.text(currentText + "…");
+            }
+          }
+        });
+      }
+    })
+    .catch(error => {
+      d3.select("body").append("p").text("Failed to load or parse CSV data.");
+      console.error(error);
+    });
+</script>
+
+</body>
+</html>
