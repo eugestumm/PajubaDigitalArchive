@@ -1,5 +1,5 @@
 ---
-title: Glossary
+title: Word Catalog
 layout: glossary
 permalink: /glossary.html
 # include CollectionBuilder info at bottom
