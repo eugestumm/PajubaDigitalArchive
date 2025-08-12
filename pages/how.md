@@ -9,7 +9,7 @@ This digital archive provides multiple visualizations of the annotated metadata.
 
 * Glossary:  
   * Frequency table: This section serves for visualizing the most frequently used words in the annotated works.   
-  * Words by work: This section contains a list of hyperlinks with all words used in Pajubá in alphabetical order. Their frequency determines their size (e.g. bigger words mean that they are more frequent, smaller words mean they are less frequent). Clicking on the selected word will direct you to a list of all works that utilize this word.  
+  * Cataloged Words: This section contains a list of hyperlinks with all words used in Pajubá in alphabetical order. Their frequency determines their size (e.g. bigger words mean that they are more frequent, smaller words mean they are less frequent). Clicking on the selected word will direct you to a list of all works that utilize this word.  
   * Pajubá-English Glossary: This section offers a lexical sample in Pajubá along with their English counterpart.  
 * Visualization:  
   * Graph Network by Cultural Production: This graph creates a network visualization of the lexicon utilized by each work. It showcases what words are common to different cultural productions and how they connect each other.   
