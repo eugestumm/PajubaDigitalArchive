@@ -1,6 +1,9 @@
 display_name,stub,dropdown_parent
 Home,/
-Glossary,/glossary.html
+Glossary,,
+Words Cataloged,/glossary.html,Glossary
+Pajubá-English Glossary,/pajuba_english.html,Glossary
+Frequency Table,/frequency_table.html,Glossary
 Visualization,,
 Graph Network by Work,/graph_network_words_works.html,Visualization
 Graph Network by Geographic Location,/graph_network_words_location.html,Visualization
