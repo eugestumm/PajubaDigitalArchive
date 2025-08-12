@@ -8,6 +8,37 @@ credits: true
 # Look in _includes/feature for options to easily add features to the page
 ---
 
+## About this project
+
+This project aims at providing scholars and general audiences with: 1\) a departure point for understanding and learning Pajubá; 2\) a historical and geographical visualization of the language, tracing its differences and similarities through space and time; 3\) a resource in English for scholarly research on the cryptolect.  
+
+This digital archive is part of Euge Stumm’s Ph.D. dissertation on gender and sexual dissident language assemblages in Latin America. 
+
+## How to use this project
+
+This digital archive provides multiple visualizations of the annotated metadata. Below, you can find instructions on how to utilize each of these tools. 
+
+* Glossary:  
+  * Frequency table: This section serves for visualizing the most frequently used words in the annotated works.   
+  * Words by work: This section contains a list of hyperlinks with all words used in Pajubá in alphabetical order. Their frequency determines their size (e.g. bigger words mean that they are more frequent, smaller words mean they are less frequent). Clicking on the selected word will direct you to a list of all works that utilize this word.  
+  * Pajubá-English Glossary: This section offers a lexical sample in Pajubá along with their English counterpart.  
+* Visualization:  
+  * Graph Network by Cultural Production: This graph creates a network visualization of the lexicon utilized by each work. It showcases what words are common to different cultural productions and how they connect each other.   
+  * Graph Network by Geographic Location: This visualization focuses on building a graph network based on the geographical location of its source. Words are nested together based on their geographical proximity, allowing a spatial visualization of the lexicon variety.   
+* Browse: This section allows you to see all the cultural productions cataloged by this digital archive. It features a search bar where you can search metadata such as lexicon, title, author, location, license, and type of work.   
+* Subjects: This section lists all the metadata in tags, including authorship and type of work.   
+* Locations: This section creates tags of all cities in which the works were published.   
+* Map: This section features a digital map visualization of all cultural productions cataloged by the project.   
+* Timeline: This section displays a chronological timeline of the publication of works.
+
+## Method
+
+The corpus of this digital archive consists of academic works and cultural productions with mixed licensing permissions. Some works are freely available on the internet while others are copyrighted and cannot be published or accessed in this digital archive due to copyright restrictions. Metadata includes information about their licensing. 
+
+For cataloging the works, all productions were read or viewed carefully and their whole or a significant sample of their lexicon in Pajubá was annotated in a spreadsheet. CollectionBuilder was utilized as a framework for visualizing the metadata. Along with the annotated metadata, the framework itself utilized by this project is published under Creative Commons CC-BY, stemming from the original CollectionBuilder project licensed under MIT license.
+
+While transcribing the lexicon present in written works, many discrepancies were found (i.e. alibã vs aliban). To better visualize the overlapping between writing of these words, the metadata of cultural productions prior to the 2010s included both their original spelling and their modernized spelling. The modernization of the spelling can serve for research with corpus linguistics, as it assists to visualize patterns in the cryptolect. 
+
 {% include feature/jumbotron.html objectid="/assets/img/jj-ying-WmnsGyaFnCQ-unsplash_opt.jpg" %}
 
 ## About CollectionBuilder-Sheets
