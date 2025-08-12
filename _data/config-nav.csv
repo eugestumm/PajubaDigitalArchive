@@ -9,4 +9,7 @@ Locations,/locations.html
 Map,/map.html
 Timeline,/timeline.html
 Data,/data.html
-About,/about.html
+About,,
+About this project,/about.html,About
+How to use this project,/how.html,About
+Method,/method.html,About
