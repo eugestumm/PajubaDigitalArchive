@@ -1,6 +1,6 @@
 ---
 title: Pajuba-English Glossary
-layout: default
+layout: page
 permalink: /pajuba_english.html
 ---
 # Pajubá-English Glossary
