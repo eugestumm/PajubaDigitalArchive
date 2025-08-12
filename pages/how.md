@@ -1,6 +1,6 @@
 ---
 title: How to use this project
-layout: default
+layout: page
 permalink: /how.html
 ---
 # How to use this project
