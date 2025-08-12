@@ -1,6 +1,6 @@
 ---
 title: Method
-layout: default
+layout: page
 permalink: /method.html
 ---
 # Method
