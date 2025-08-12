@@ -2,7 +2,8 @@ display_name,stub,dropdown_parent
 Home,/
 Glossary,/glossary.html
 Visualization,,
-Graph Network,/graph_network_words_works.html,Visualization
+Graph Network by Work,/graph_network_words_works.html,Visualization
+Graph Network by Geographic Location,/graph_network_words_location.html,Visualization
 Browse,/browse.html
 Subjects,/subjects.html
 Locations,/locations.html
