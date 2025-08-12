@@ -4,7 +4,9 @@
 layout: page
 ---
 
-{{ content }}
+<div class="container my-4">
+    {{ content }}
+</div>
 
 {%- if page.cloud-fields == "site.data.theme.pajuba-words-field" -%}
     {% assign fields = site.data.theme.pajuba-words-field %}
