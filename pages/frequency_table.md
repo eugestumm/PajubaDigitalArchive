@@ -1,6 +1,6 @@
 ---
 title: Frequency Table
-layout: default
+layout: page
 permalink: /frequency_table.html
 ---
 # Frequency Table
