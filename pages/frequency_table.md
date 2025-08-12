@@ -5,4 +5,4 @@ permalink: /frequency_table.html
 ---
 # Frequency Table
 
-This section serves for visualizing the most frequently used words in the annotated works. 
+This section serves for visualizing the most frequently used words in the annotated works. Currently in progress.
