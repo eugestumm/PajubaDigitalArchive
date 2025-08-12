@@ -1,5 +1,5 @@
 ---
-title: Word Catalog
+title: Cataloged Words
 layout: glossary
 permalink: /glossary.html
 # include CollectionBuilder info at bottom
@@ -11,6 +11,6 @@ cloud-fields: site.data.theme.pajuba-words-field
 # Look in _includes/feature for options to easily add features to the page
 ---
 
-# Word catalog
+# Cataloged Words
 
 This section contains a list of hyperlinks with all words used in Pajubá in alphabetical order. Their frequency determines their size (e.g. bigger words mean that they are more frequent, smaller words mean they are less frequent). Clicking on the selected word will direct you to a list of all works that utilize this word.
