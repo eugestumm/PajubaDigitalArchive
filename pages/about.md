@@ -19,7 +19,7 @@ This project aims at providing scholars and general audiences with:
 
 ## What is Pajubá
 
-Pajubá is a cryptolect (a secret language) originally developed by Brazilian travestis and trans women, and eventually adopted by a broader community of gender and sexual dissidents in Brazil. As [Gabriela Araujo](https://repositorio.ufu.br/handle/123456789/21850) highlights, Pajubá's vocabulary includes significant influence of Western African languages (e.g. Yoruba) and European languages (e.g. Italian and French). The use of Pajubá as both a form of cultural expression and a means of protection, allowing speakers to communicate safely in hostile environments and marking membership and belonging.
+Pajubá is a cryptolect (a secret language) originally developed by Brazilian travestis and trans women, and eventually adopted by a broader community of gender and sexual dissidents in Brazil. As [Gabriela Araujo](https://repositorio.ufu.br/handle/123456789/21850) highlights, Pajubá's vocabulary includes significant influence of Western African languages (e.g. Yoruba) and European languages (e.g. Italian and French). The use of Pajubá serves as both a form of cultural expression and a means of protection, allowing speakers to communicate safely in hostile environments and marking membership and belonging to each other.
 
 ## How to Use This Archive
 * For Researchers
