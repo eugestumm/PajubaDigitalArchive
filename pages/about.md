@@ -19,7 +19,7 @@ This project aims at providing scholars and general audiences with:
 
 ## How This Project Was Made
 
-For further information on data collection, full access to metadata, and further methodological details, check the section ["Method.](https://eugestumm.github.io/PajubaDigitalArchive/method.html)"
+For further information on data collection, full access to metadata, and further methodological details, check the section "[Method.](https://eugestumm.github.io/PajubaDigitalArchive/method.html)"
 
 ## Pajubá Digital Archive Utilizes CollectionBuilder Framework
 
