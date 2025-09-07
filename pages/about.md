@@ -23,25 +23,25 @@ Pajubá is a cryptolect (a secret language) originally developed by Brazilian tr
 
 ## How to Use This Archive
 * For Researchers
-  * Browse by region, time period, genre, or lexicon
-  * Download full metadata for analysis
+  * Browse by [region](https://eugestumm.github.io/PajubaDigitalArchive/locations.html), [time period](https://eugestumm.github.io/PajubaDigitalArchive/timeline.html), [author and genre](https://eugestumm.github.io/PajubaDigitalArchive/subjects.html), or [lexicon](https://eugestumm.github.io/PajubaDigitalArchive/glossary.html)
+  * Download [full metadata](https://eugestumm.github.io/PajubaDigitalArchive/data.html) for analysis
   * Access [full methodological documentation](https://eugestumm.github.io/PajubaDigitalArchive/method.html)
-  * Browse both primary and secondary sources 
+  * Browse both primary and [secondary sources](https://eugestumm.github.io/PajubaDigitalArchive/browse.html#academic%20work) 
 
 * For Students and General Public
-  * Explore interactive maps showcasing regional variations
-  * Listen to audio samples (with translations and/or transcriptions, when available)
+  * Explore an [interactive map](https://eugestumm.github.io/PajubaDigitalArchive/map.html)**** showcasing regional variations
+  * Listen to [audio samples](https://eugestumm.github.io/PajubaDigitalArchive/browse.html#video) (with translations and/or transcriptions, when available)
   * Read historical documents and Pajubá samples
 
 ## How This Project Was Made
 
-For further information on data collection, full access to metadata, and further methodological details, check the section "[Method.](https://eugestumm.github.io/PajubaDigitalArchive/method.html)"
+For further information on data collection, encoding, and methodological procedures, check the section "[Method.](https://eugestumm.github.io/PajubaDigitalArchive/method.html)"
 
 ## Funding and Sustainability
 This project received a grant of $1000 dollars from the Digital Humanities Fellowship of the [University of Miami](https://dh.miami.edu). Stemming from a [Minimal Computing](https://go-dh.github.io/mincomp/about) philosophy, the website is hosted in the form of a static Jekyll webpage through GitHub Pages and the database is hosted by Google Spreadsheets. 
 
-# Acknowledgments
-We extend profound gratitude to the Pajubá speakers, LGBTQIAPN+ activists, and community organizations who shared their knowledge and trusted us with their stories. Special thanks to the University of Miami's [Center for the Humanities](https://humanities.as.miami.edu) and [Digital Humanities](https://dh.miami.edu/dh-projects/index.html) for providing funding for this project.
+## Acknowledgments
+We extend profound gratitude to the Pajubá speakers, LGBTQIAPN+ activists, and community organizations who developed, preserved, and shared cultural expressions in Pajubá. We also thank the University of Miami's [Center for the Humanities](https://humanities.as.miami.edu) and [Digital Humanities](https://dh.miami.edu/dh-projects/index.html) for providing funding for this project.
 
 ## Contact
 
