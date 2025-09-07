@@ -38,7 +38,7 @@ Pajubá is a cryptolect (a secret language) originally developed by Brazilian tr
 For further information on data collection, full access to metadata, and further methodological details, check the section "[Method.](https://eugestumm.github.io/PajubaDigitalArchive/method.html)"
 
 ## Funding and Sustainability
-This project received a grant of $1000 dollars from the [Digital Humanities Fellowship of the University of Miami](https://dh.miami.edu). Stemming from a [Minimal Computing](https://go-dh.github.io/mincomp/about) philosophy, the website is hosted in the form of a static Jekyll webpage through GitHub Pages and the database is hosted by Google Spreadsheets. 
+This project received a grant of $1000 dollars from the Digital Humanities Fellowship of the [University of Miami](https://dh.miami.edu). Stemming from a [Minimal Computing](https://go-dh.github.io/mincomp/about) philosophy, the website is hosted in the form of a static Jekyll webpage through GitHub Pages and the database is hosted by Google Spreadsheets. 
 
 ## Contact
 
