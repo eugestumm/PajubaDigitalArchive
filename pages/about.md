@@ -8,7 +8,7 @@ credits: true
 # Look in _includes/feature for options to easily add features to the page
 ---
 
-# About this project
+# About This Project
 
 This project aims at providing scholars and general audiences with: 
 * 1\) a departure point for understanding and learning Pajubá
@@ -17,7 +17,7 @@ This project aims at providing scholars and general audiences with:
 
 This digital archive is part of [Euge Stumm](https://eugestumm.github.io)’s Ph.D. dissertation on gender and sexual dissident language assemblages in Latin America. The development of the corpus data was supervised by Professor Steven Butterman and the implementation of this website was supervised by Professor Susanna Allés-Torrent. 
 
-## How this project was made
+## How This Project Was Made
 
 For further information on data collection, full access to metadata, and further methodological details, check the section ["Method.](https://eugestumm.github.io/PajubaDigitalArchive/method.html)"
 
