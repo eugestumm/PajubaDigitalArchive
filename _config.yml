@@ -69,3 +69,11 @@ exclude: [docs/, Rakefile, README.md, LICENSE]
 # compress CSS output
 sass:
   style: compressed
+
+plugins:
+  - jekyll-get
+
+jekyll_get:
+  - data: pajuba
+    json: "https://docs.google.com/spreadsheets/d/e/2PACX-1vStYxu20bWFcEwD89O0H8qcL3J_5IV_IRzhkBG9feUMAGFOt88lCMeahPMnOuhRAuixD0_mMreFeMEA/pub?output=csv"
+
