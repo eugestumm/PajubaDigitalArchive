@@ -10,7 +10,7 @@ permalink: /about.html
 
 # About this Project
 
-This digital archive is part of [Euge Stumm](https://eugestumm.github.io)’s Ph.D. dissertation on gender and sexual dissident language assemblages in Latin America. The development of the corpus data was supervised by Professor Steven Butterman and the implementation of this website was supervised by Professor Susanna Allés-Torrent. We are currently working on a bilingual version (in Portuguese) of this project. 
+This digital archive is part of [Euge Stumm](https://eugestumm.github.io)’s Ph.D. dissertation on gender and sexual dissident language assemblages in Latin America. The development of the corpus data was supervised by Professor Steven Butterman and the implementation of this website was supervised by Professor Susanna Allés-Torrent. We are currently working on a bilingual version (in Portuguese) of this project, expected for the Spring of 2026. 
 
 This project aims at providing scholars and general audiences with: 
 * 1\) a departure point for understanding and learning Pajubá
@@ -39,6 +39,9 @@ For further information on data collection, full access to metadata, and further
 
 ## Funding and Sustainability
 This project received a grant of $1000 dollars from the Digital Humanities Fellowship of the [University of Miami](https://dh.miami.edu). Stemming from a [Minimal Computing](https://go-dh.github.io/mincomp/about) philosophy, the website is hosted in the form of a static Jekyll webpage through GitHub Pages and the database is hosted by Google Spreadsheets. 
+
+# Acknowledgments
+We extend profound gratitude to the Pajubá speakers, LGBTQIAPN+ activists, and community organizations who shared their knowledge and trusted us with their stories. Special thanks to the University of Miami's [Center for the Humanities](https://humanities.as.miami.edu) and [Digital Humanities](https://dh.miami.edu/dh-projects/index.html) for providing funding for this project.
 
 ## Contact
 
