@@ -17,6 +17,24 @@ This project aims at providing scholars and general audiences with:
 * 2\) a historical and geographical visualization of the language, tracing its differences and similarities through space and time
 * 3\) a resource in English for scholarly research on the cryptolect
 
+## What is Pajubá
+
+Pajubá is a cryptolect (a secret language) originally developed by Brazilian travestis and trans women, and eventually adopted by a broader community of gender and sexual dissidents in Brazil. As [Gabriela Araujo](https://repositorio.ufu.br/handle/123456789/21850) highlights, Pajubá's vocabulary includes significant influence of Western African languages (e.g. Yoruba) and European languages (e.g. Italian and French). The use of Pajubá as both a form of cultural expression and a means of protection, allowing speakers to communicate safely in hostile environments and marking membership and belonging.
+
+## How to Use This Archive
+* For Researchers
+  * Browse by region, time period, or linguistic features
+  * Download metadata for analysis
+  * Access full methodological documentation
+  * Find citation guidelines in our [Research Use] section
+
+For Students and General Public
+
+Start with our [Introduction to Pajubá] section
+Explore interactive maps showing regional variations
+Listen to audio samples with translations
+Read community stories and historical context
+
 ## How This Project Was Made
 
 For further information on data collection, full access to metadata, and further methodological details, check the section "[Method.](https://eugestumm.github.io/PajubaDigitalArchive/method.html)"
