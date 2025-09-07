@@ -27,7 +27,6 @@ Pajubá is a cryptolect (a secret language) originally developed by Brazilian tr
   * Download full metadata for analysis
   * Access [full methodological documentation](https://eugestumm.github.io/PajubaDigitalArchive/method.html)
   * Browse both primary and secondary sources 
-
 * For Students and General Public
  * Explore interactive maps showcasing regional variations
  * Listen to audio samples (with translations and/or transcriptions, when available)
