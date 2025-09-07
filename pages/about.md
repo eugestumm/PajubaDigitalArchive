@@ -10,12 +10,12 @@ credits: true
 
 # About This Project
 
+This digital archive is part of [Euge Stumm](https://eugestumm.github.io)’s Ph.D. dissertation on gender and sexual dissident language assemblages in Latin America. The development of the corpus data was supervised by Professor Steven Butterman and the implementation of this website was supervised by Professor Susanna Allés-Torrent. 
+
 This project aims at providing scholars and general audiences with: 
 * 1\) a departure point for understanding and learning Pajubá
 * 2\) a historical and geographical visualization of the language, tracing its differences and similarities through space and time
 * 3\) a resource in English for scholarly research on the cryptolect
-
-This digital archive is part of [Euge Stumm](https://eugestumm.github.io)’s Ph.D. dissertation on gender and sexual dissident language assemblages in Latin America. The development of the corpus data was supervised by Professor Steven Butterman and the implementation of this website was supervised by Professor Susanna Allés-Torrent. 
 
 ## How This Project Was Made
 
