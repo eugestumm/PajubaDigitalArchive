@@ -21,7 +21,7 @@ This digital archive is part of [Euge Stumm](https://eugestumm.github.io)’s Ph
 
 For further information on data collection, full access to metadata, and further methodological details, check the section ["Method.](https://eugestumm.github.io/PajubaDigitalArchive/method.html)"
 
-## Pajubá Digital Archive utilizes CollectionBuilder Framework
+## Pajubá Digital Archive Utilizes CollectionBuilder Framework
 
 This site is generated using [CollectionBuilder-Sheets](https://github.com/CollectionBuilder/collectionbuilder-sheets), a template  for creating simple digital exhibit websites by loading collection metadata directly from a CSV, designed for teaching digital library skills and easy hosting on GitHub Pages.
 
