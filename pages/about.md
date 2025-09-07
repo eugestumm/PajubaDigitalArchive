@@ -10,7 +10,7 @@ permalink: /about.html
 
 # About this Project
 
-This digital archive is part of [Euge Stumm](https://eugestumm.github.io)’s Ph.D. dissertation on gender and sexual dissident language assemblages in Latin America. The development of the corpus data was supervised by Professor Steven Butterman and the implementation of this website was supervised by Professor Susanna Allés-Torrent. 
+This digital archive is part of [Euge Stumm](https://eugestumm.github.io)’s Ph.D. dissertation on gender and sexual dissident language assemblages in Latin America. The development of the corpus data was supervised by Professor Steven Butterman and the implementation of this website was supervised by Professor Susanna Allés-Torrent. We are currently working on a bilingual version (in Portuguese) of this project. 
 
 This project aims at providing scholars and general audiences with: 
 * 1\) a departure point for understanding and learning Pajubá
@@ -29,7 +29,6 @@ Pajubá is a cryptolect (a secret language) originally developed by Brazilian tr
   * Browse both primary and secondary sources 
 
 * For Students and General Public
-  * test 
   * Explore interactive maps showcasing regional variations
   * Listen to audio samples (with translations and/or transcriptions, when available)
   * Read historical documents and Pajubá samples
