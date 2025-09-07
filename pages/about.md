@@ -40,6 +40,10 @@ For further information on data collection, full access to metadata, and further
 ## Funding and Sustainability
 This project received a grant of $1000 dollars from the [Digital Humanities Fellowship of the University of Miami](https://dh.miami.edu). Stemming from a [Minimal Computing](https://go-dh.github.io/mincomp/about) philosophy, the website is hosted in the form of a static Jekyll webpage through GitHub Pages and the database is hosted by Google Spreadsheets. 
 
+## Contact
+
+For collaborations, inquiries, and technical assistance, please contact [ehs89@miami.edu](mailto:ehs89@miami.edu). 
+
 ## Pajubá Digital Archive Utilizes CollectionBuilder Framework
 
 This site is generated using [CollectionBuilder-Sheets](https://github.com/CollectionBuilder/collectionbuilder-sheets), a template  for creating simple digital exhibit websites by loading collection metadata directly from a CSV, designed for teaching digital library skills and easy hosting on GitHub Pages.
