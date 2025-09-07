@@ -42,7 +42,7 @@ This project received a grant of $1000 dollars from the [Digital Humanities Fell
 
 ## Contact
 
-For collaborations, inquiries, and technical assistance, please contact [ehs89@miami.edu](mailto:ehs89@miami.edu). 
+For collaborations, inquiries, and technical assistance, please contact Euge Stumm, [ehs89@miami.edu](mailto:ehs89@miami.edu). 
 
 ## Pajubá Digital Archive Utilizes CollectionBuilder Framework
 
