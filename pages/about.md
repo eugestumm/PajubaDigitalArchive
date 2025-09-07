@@ -8,7 +8,7 @@ permalink: /about.html
 # Look in _includes/feature for options to easily add features to the page
 ---
 
-# About This Project
+# About this Project
 
 This digital archive is part of [Euge Stumm](https://eugestumm.github.io)’s Ph.D. dissertation on gender and sexual dissident language assemblages in Latin America. The development of the corpus data was supervised by Professor Steven Butterman and the implementation of this website was supervised by Professor Susanna Allés-Torrent. 
 
@@ -23,17 +23,15 @@ Pajubá is a cryptolect (a secret language) originally developed by Brazilian tr
 
 ## How to Use This Archive
 * For Researchers
-  * Browse by region, time period, or linguistic features
-  * Download metadata for analysis
-  * Access full methodological documentation
-  * Find citation guidelines in our [Research Use] section
+  * Browse by region, time period, genre, or lexicon
+  * Download full metadata for analysis
+  * Access [full methodological documentation](https://eugestumm.github.io/PajubaDigitalArchive/method.html)
+  * Browse both primary and secondary sources 
 
-For Students and General Public
-
-Start with our [Introduction to Pajubá] section
-Explore interactive maps showing regional variations
-Listen to audio samples with translations
-Read community stories and historical context
+* For Students and General Public
+ * Explore interactive maps showcasing regional variations
+ * Listen to audio samples (with translations and/or transcriptions, when available)
+ * Read historical documents and Pajubá samples
 
 ## How This Project Was Made
 
