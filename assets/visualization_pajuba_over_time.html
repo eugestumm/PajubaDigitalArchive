@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Bubbles by Year and Media Presence</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 15px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #333;
+        }
+        
+        .tooltip {
+            position: absolute;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            border-radius: 8px;
+            pointer-events: none;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            max-width: 200px;
+        }
+        
+        .bubble {
+            cursor: pointer;
+        }
+        
+        .bubble text {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 600;
+            text-anchor: middle;
+            dominant-baseline: central;
+            pointer-events: none;
+            fill: #333;
+        }
+        
+        .axis {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .axis-label {
+            font-size: 14px;
+            font-weight: 600;
+            fill: #333;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 18px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Word Evolution Timeline</h1>
+        <p class="subtitle">Words sorted by year of first documentation, colored by mass media presence</p>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #4CAF50;"></div>
+                <span>Appears in Mass Media</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FF7043;"></div>
+                <span>Does Not Appear in Mass Media</span>
+            </div>
+        </div>
+        
+        <div id="loading" class="loading">Loading data...</div>
+        <svg id="visualization"></svg>
+    </div>
+
+    <script>
+        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSD2ABiXhZM4n3uf2hVTua0ZV2hK-VijPDU0lRBCZmBKlj8HHZpDhYK-y_0hm3tysuaVPNU5_CCLKXj/pub?output=csv';
+        
+        // Set up dimensions
+        const margin = { top: 40, right: 40, bottom: 80, left: 60 };
+        const width = 1300 - margin.left - margin.right;
+        const height = 700 - margin.bottom - margin.top;
+        
+        const svg = d3.select('#visualization')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom);
+            
+        const g = svg.append('g')
+            .attr('transform', `translate(${margin.left},${margin.top})`);
+            
+        // Create tooltip
+        const tooltip = d3.select('body').append('div')
+            .attr('class', 'tooltip')
+            .style('opacity', 0);
+
+        // Load and process data
+        d3.csv(csvUrl).then(data => {
+            document.getElementById('loading').style.display = 'none';
+            
+            // Clean and process the data
+            const processedData = data.map(d => ({
+                word: d.standardized_words ? d.standardized_words.trim() : '',
+                year: +d.year_first_documentation,
+                inMedia: d.appears_in_mass_media ? d.appears_in_mass_media.toLowerCase().trim() === 'yes' : false
+            })).filter(d => d.word && !isNaN(d.year) && d.year > 0);
+            
+            if (processedData.length === 0) {
+                document.getElementById('loading').innerHTML = 'No valid data found. Please check the CSV structure.';
+                document.getElementById('loading').style.display = 'block';
+                return;
+            }
+            
+            console.log('Processed data:', processedData.slice(0, 5)); // Debug log
+            
+            // Sort data by year
+            processedData.sort((a, b) => a.year - b.year);
+            
+            // Create scales
+            const yearExtent = d3.extent(processedData, d => d.year);
+            const xScale = d3.scaleLinear()
+                .domain(yearExtent)
+                .range([0, width]);
+            
+            // Create size scale based on word length (for visual variety)
+            const sizeScale = d3.scaleLinear()
+                .domain(d3.extent(processedData, d => d.word.length))
+                .range([20, 60]);
+                
+            // Color scale
+            const colorScale = d3.scaleOrdinal()
+                .domain([true, false])
+                .range(['#4CAF50', '#FF7043']); // Green for media, Orange for non-media
+            
+            // Create force simulation for bubble positioning
+            const simulation = d3.forceSimulation(processedData)
+                .force('x', d3.forceX(d => xScale(d.year)).strength(0.8))
+                .force('y', d3.forceY(height / 2).strength(0.1))
+                .force('collision', d3.forceCollide(d => sizeScale(d.word.length) / 2 + 2))
+                .stop();
+            
+            // Run simulation
+            for (let i = 0; i < 300; ++i) simulation.tick();
+            
+            // Create bubbles
+            const bubbles = g.selectAll('.bubble')
+                .data(processedData)
+                .enter().append('g')
+                .attr('class', 'bubble')
+                .attr('transform', d => `translate(${d.x},${d.y})`);
+            
+            // Add circles
+            bubbles.append('circle')
+                .attr('r', d => sizeScale(d.word.length) / 2)
+                .attr('fill', d => colorScale(d.inMedia))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 1.5)
+                .attr('opacity', 0.8);
+            
+            // Add text labels
+            bubbles.append('text')
+                .text(d => d.word)
+                .attr('font-size', d => Math.max(8, sizeScale(d.word.length) / 4))
+                .each(function(d) {
+                    const text = d3.select(this);
+                    const radius = sizeScale(d.word.length) / 2;
+                    const fontSize = Math.max(8, radius / 2.5);
+                    text.attr('font-size', fontSize);
+                    
+                    // Wrap text if too long
+                    if (d.word.length > 12) {
+                        const words = d.word.split(/[\s-]/);
+                        if (words.length > 1) {
+                            text.text('');
+                            words.forEach((word, i) => {
+                                text.append('tspan')
+                                    .text(word)
+                                    .attr('x', 0)
+                                    .attr('dy', i === 0 ? -fontSize/4 : fontSize);
+                            });
+                        }
+                    }
+                });
+            
+            // Add interactions
+            bubbles
+                .on('mouseover', function(event, d) {
+                    const circle = d3.select(this).select('circle');
+                    circle.attr('stroke-width', 3)
+                          .attr('opacity', 1);
+                    
+                    tooltip.style('opacity', 1)
+                           .html(`
+                               <strong>${d.word}</strong><br/>
+                               Year: ${d.year}<br/>
+                               Media: ${d.inMedia ? 'Yes' : 'No'}
+                           `)
+                           .style('left', (event.pageX + 15) + 'px')
+                           .style('top', (event.pageY - 35) + 'px');
+                })
+                .on('mousemove', function(event, d) {
+                    tooltip.style('left', (event.pageX + 15) + 'px')
+                           .style('top', (event.pageY - 35) + 'px');
+                })
+                .on('mouseout', function(event, d) {
+                    const circle = d3.select(this).select('circle');
+                    circle.attr('stroke-width', 1.5)
+                          .attr('opacity', 0.8);
+                    
+                    tooltip.style('opacity', 0);
+                });
+            
+            // Add axes
+            const xAxis = d3.axisBottom(xScale)
+                .tickFormat(d3.format('d'))
+                .ticks(10);
+            
+            g.append('g')
+                .attr('class', 'axis')
+                .attr('transform', `translate(0,${height})`)
+                .call(xAxis);
+            
+            // Add axis label
+            g.append('text')
+                .attr('class', 'axis-label')
+                .attr('transform', `translate(${width/2},${height + 50})`)
+                .style('text-anchor', 'middle')
+                .text('Year of First Documentation');
+            
+            // Add title with count
+            d3.select('.subtitle')
+                .text(`${processedData.length} words sorted by year of first documentation, colored by mass media presence`);
+                
+        }).catch(error => {
+            console.error('Error loading data:', error);
+            document.getElementById('loading').innerHTML = 'Error loading data. Please check the CSV URL and try again.';
+        });
+    </script>
+</body>
+</html>
