@@ -110,7 +110,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Word Evolution Timeline</h1>
+        <h1>Pajubá Documentation Over Time</h1>
         <p class="subtitle">Words sorted by year of first documentation, colored by mass media presence</p>
         
         <div class="legend">
@@ -247,7 +247,7 @@
                            .html(`
                                <strong>${d.word}</strong><br/>
                                Year: ${d.year}<br/>
-                               Media: ${d.inMedia ? 'Yes' : 'No'}
+                               Appears in Mass Media: ${d.inMedia ? 'Yes' : 'No'}
                            `)
                            .style('left', (event.pageX + 15) + 'px')
                            .style('top', (event.pageY - 35) + 'px');
