@@ -5,7 +5,8 @@ permalink: /pajuba_documentation_over_time.html
 ---
 
 <div class="responsive-network-iframe">
-  <iframe src="{{ site.baseurl }}/assets/network_graph_words_work_layout.html" 
+  <iframe src="{{ site.baseurl }}/assets/visualization_pajuba_over_time.html
+.html" 
           allowfullscreen>
   </iframe>
 </div>
